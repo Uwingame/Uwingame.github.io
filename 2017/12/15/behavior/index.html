@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android Behavior | OneMena</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="（一）简单使用1、简介实现CoordinatorLayout中的直接子View的相互交互行为，这些交互行为可能包括拖动，滑动，抛掷或任何其他手势！CoordinatorLayout.Behavior官方文档 2、自定义Behavior第一步：必须要继承CoordinatorLayout.Behavior，且重写构造方法public Behavior(Context context, Attribu">
+<meta name="keywords" content="Android Behavior">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Behavior">
+<meta property="og:url" content="http://yoursite.com/2017/12/15/behavior/index.html">
+<meta property="og:site_name" content="OneMena">
+<meta property="og:description" content="（一）简单使用1、简介实现CoordinatorLayout中的直接子View的相互交互行为，这些交互行为可能包括拖动，滑动，抛掷或任何其他手势！CoordinatorLayout.Behavior官方文档 2、自定义Behavior第一步：必须要继承CoordinatorLayout.Behavior，且重写构造方法public Behavior(Context context, Attribu">
+<meta property="og:updated_time" content="2018-01-11T08:36:37.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Behavior">
+<meta name="twitter:description" content="（一）简单使用1、简介实现CoordinatorLayout中的直接子View的相互交互行为，这些交互行为可能包括拖动，滑动，抛掷或任何其他手势！CoordinatorLayout.Behavior官方文档 2、自定义Behavior第一步：必须要继承CoordinatorLayout.Behavior，且重写构造方法public Behavior(Context context, Attribu">
+  
+    <link rel="alternate" href="/atom.xml" title="OneMena" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">OneMena</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-behavior" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/15/behavior/" class="article-date">
+  <time datetime="2017-12-15T02:40:10.000Z" itemprop="datePublished">2017-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Behavior
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="（一）简单使用"><a href="#（一）简单使用" class="headerlink" title="（一）简单使用"></a>（一）简单使用</h1><h2 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h2><p>实现CoordinatorLayout中的<strong>直接子View</strong>的相互交互行为，这些交互行为可能包括拖动，滑动，抛掷或任何其他手势！<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="noopener">CoordinatorLayout.Behavior官方文档</a></p>
+<h2 id="2、自定义Behavior"><a href="#2、自定义Behavior" class="headerlink" title="2、自定义Behavior"></a>2、自定义Behavior</h2><p><strong>第一步</strong>：必须要继承<strong>CoordinatorLayout.Behavior</strong>，且重写构造方法<strong>public Behavior(Context context, AttributeSet attrs)</strong></p>
+<pre><code>public TopicBehavior(Context context, AttributeSet set) {
+    super(context, set);
+}
+</code></pre><p>另外，我们也可以自定义参数，通过AttributeSet获取已定义参数，并在以后的工作中使用！</p>
+<p><strong>第二步</strong>：重写相应的方法</p>
+<p><strong>依赖处理</strong></p>
+<pre><code>layoutDependsOn(CoordinatorLayout parent, V child, View dependency)
+
+onDependentViewChanged(CoordinatorLayout parent, V child, View dependency)
+</code></pre><p>layoutDependsOn：确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系，<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html#layoutDependsOn(android.support.design.widget.CoordinatorLayout, V, android.view.View" target="_blank" rel="noopener">链接</a>)</p>
+<p>onDependentViewChanged：回应一个孩子的依赖观点的变化，只要依赖视图在标准布局流程外改变大小或位置，就会调用此方法，<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html#onDependentViewChanged(android.support.design.widget.CoordinatorLayout, V, android.view.View" target="_blank" rel="noopener">链接</a>)</p>
+<p>参数解析：</p>
+<p>第一个参数，CoordinatorLayout，作为父布局；</p>
+<p>第二个参数，V，目标View；</p>
+<p>第三个参数，View，目标View所依赖的视图View</p>
+<p><strong>滑动处理</strong></p>
+<pre><code>onStartNestedScroll(CoordinatorLayout coordinatorLayout, V child, View directTargetChild, View target, int axes, int type)
+
+onNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type)
+
+onNestedFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY, boolean consumed)
+</code></pre><p>onStartNestedScroll：当CoordinatorLayout的后代尝试启动嵌套滚动时调用，<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html#onStartNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, android.view.View, int, int" target="_blank" rel="noopener">链接</a>)</p>
+<p>onNestedScroll：当正在进行嵌套的滚动更新并且目标已经滚动或试图滚动时调用，<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html#onNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, int, int, int, int, int" target="_blank" rel="noopener">链接</a>)</p>
+<p>onNestedFling：当一个嵌套滚动的孩子开始一个投掷或一个行动，这将是一个投掷时调用，<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html#onNestedFling(android.support.design.widget.CoordinatorLayout, V, android.view.View, float, float, boolean" target="_blank" rel="noopener">链接</a>)</p>
+<p><strong>第三步</strong>：</p>
+<p>在布局中添加：</p>
+<pre><code>app:layout_behavior=&quot;自定会behavior对应的完整路径&quot;&gt;
+</code></pre><p>比如：</p>
+<pre><code>app:layout_behavior=&quot;com.uwinltd.period.ui.club.TopicBehavior&quot;&gt;
+</code></pre><p>通过注解添加：自定义View类上添加@DefaultBehavior(你的Behavior.class)</p>
+<p>比如：</p>
+<pre><code>@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class)
+public class AppBarLayout extends LinearLayout {
+    ...
+}
+</code></pre><p><strong>自定义Behavior如何添加回调</strong></p>
+<p>首先，提供获取behavior对象的方法，比如：</p>
+<pre><code>    public static &lt;V extends View&gt; TopicBehavior&lt;V&gt; from(V view) {
+    ViewGroup.LayoutParams params = view.getLayoutParams();
+    if (!(params instanceof CoordinatorLayout.LayoutParams)) {
+        throw new IllegalArgumentException(&quot;The view is not a child of CoordinatorLayout&quot;);
+    }
+    CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params)
+            .getBehavior();
+    if (!(behavior instanceof TopicBehavior)) {
+        throw new IllegalArgumentException(
+                &quot;The view is not associated with TopicBehavior&quot;);
+    }
+    return (TopicBehavior&lt;V&gt;) behavior;
+}
+</code></pre><p>然后，设置回调，比如：</p>
+<pre><code>TopicBehavior behavior = TopicBehavior.from(mFlFollow);
+    mBehavior.setOnStateChangeListener(new TopicBehavior.OnStateChangeListener() {
+        @Override
+        public void onScrollUp() {
+
+        }
+
+        @Override
+        public void onScrollDown() {
+
+        }
+
+        @Override
+        public void onHeadExpand() {
+
+        }
+
+        @Override
+        public void onHeadCollapse() {
+
+        }
+    });
+</code></pre><p>#（二）原理分析</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/15/behavior/" data-id="cjctwo5w50001ffyduu87coh0" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Behavior/">Android Behavior</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/RxJava2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          RxJava2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/09/Dagger2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Dagger2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Behavior/">Android Behavior</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJava/">RxJava</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-Behavior/" style="font-size: 10px;">Android Behavior</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/15/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/RxJava2/">RxJava2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/15/behavior/">Android Behavior</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/09/Dagger2/">Dagger2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/10/Android-Flavors使用/">Android Flavors使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 OneMena<br>
+      Propulsé par <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
